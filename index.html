@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LexQR — Agenda Legal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ SIDEBAR ══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">⚖</div>
+    <div class="brand-text">
+      <span class="brand-name">LexQR</span>
+      <span class="brand-sub">Tramites</span>
+    </div>
+    <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-group-label">Principal</div>
+    <button class="nav-item active" onclick="showSection('dashboard')">
+      <span class="nav-icon">◈</span> Dashboard
+    </button>
+    <button class="nav-item" onclick="showSection('expedientes')">
+      <span class="nav-icon">◉</span> Expedientes
+    </button>
+    <button class="nav-item" onclick="showSection('agenda')">
+      <span class="nav-icon">◷</span> Agenda
+    </button>
+    <button class="nav-item" onclick="showSection('clientes')">
+      <span class="nav-icon">◎</span> Clientes
+    </button>
+    <button class="nav-item" onclick="showSection('documentos')">
+      <span class="nav-icon">◫</span> Documentos
+    </button>
+
+    <div class="nav-group-label">Trámites Gubernamentales</div>
+    <button class="nav-item" onclick="showSection('rpp')">
+      <span class="nav-icon">🏠</span> Reg. Público Propiedad
+    </button>
+    <button class="nav-item" onclick="showSection('catastro')">
+      <span class="nav-icon">🗺</span> Catastro
+    </button>
+    <button class="nav-item" onclick="showSection('regcivil')">
+      <span class="nav-icon">📜</span> Registro Civil
+    </button>
+    <button class="nav-item" onclick="showSection('sat')">
+      <span class="nav-icon">🧾</span> SAT / Fiscal
+    </button>
+    <button class="nav-item" onclick="showSection('notaria')">
+      <span class="nav-icon">🖋</span> Notaría
+    </button>
+
+    <div class="nav-group-label">Finanzas</div>
+    <button class="nav-item" onclick="showSection('honorarios')">
+      <span class="nav-icon">💼</span> Honorarios
+    </button>
+    <button class="nav-item" onclick="showSection('gastos')">
+      <span class="nav-icon">💸</span> Gastos y Pagos
+    </button>
+
+    <div class="nav-group-label">Análisis</div>
+    <button class="nav-item" onclick="showSection('estadisticas')">
+      <span class="nav-icon">◬</span> Estadísticas
+    </button>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">LM</div>
+    <div class="user-info">
+      <span class="user-name">Lic. Sergio Moreno</span>
+      <span class="user-role">Abogado Litigante</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════ OVERLAY ═══ -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ════════════════════════════════════════ MAIN WRAP ═══ -->
+<div class="main-wrap" id="mainWrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-actions">
+      <button class="btn-new" onclick="openModal('expediente')">+ Nuevo</button>
+      <div class="notif-bell" onclick="toggleNotif()">
+        🔔 <span class="notif-dot"></span>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-header">Notificaciones</div>
+          <div class="notif-item urgent">⚠ Audiencia hoy — Exp. 1042/2024 a las 10:00h</div>
+          <div class="notif-item">📄 Documento vence mañana — Caso Torres</div>
+          <div class="notif-item">✅ Pago recibido — Cliente Ramírez</div>
+          <div class="notif-item">🗓 Prórroga solicitada — Exp. 0891/2024</div>
+          <div class="notif-item urgent">⚠ Trámite RPP vence en 3 días — Dzul</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════ SECCIÓN: DASHBOARD ═══ -->
+  <section class="section active" id="sec-dashboard">
+
+    <!-- KPI CARDS — row 1 -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-cyan" onclick="showSection('expedientes')">
+        <div class="kpi-icon">📁</div>
+        <div class="kpi-val" id="kpi-exp">24</div>
+        <div class="kpi-label">Expedientes Activos</div>
+        <div class="kpi-trend">↑ 3 este mes</div>
+      </div>
+      <div class="kpi-card kpi-violet" onclick="showSection('agenda')">
+        <div class="kpi-icon">🗓</div>
+        <div class="kpi-val" id="kpi-aud">7</div>
+        <div class="kpi-label">Audiencias Este Mes</div>
+        <div class="kpi-trend">↑ 2 próximas</div>
+      </div>
+      <div class="kpi-card kpi-rose" onclick="showSection('clientes')">
+        <div class="kpi-icon">👤</div>
+        <div class="kpi-val" id="kpi-cli">18</div>
+        <div class="kpi-label">Clientes Activos</div>
+        <div class="kpi-trend">↑ 1 nuevo</div>
+      </div>
+      <div class="kpi-card kpi-amber" onclick="showSection('documentos')">
+        <div class="kpi-icon">⚠</div>
+        <div class="kpi-val" id="kpi-ven">5</div>
+        <div class="kpi-label">Vencimientos Próximos</div>
+        <div class="kpi-trend">⚠ Revisión urgente</div>
+      </div>
+    </div>
+
+    <!-- KPI CARDS — row 2: finanzas -->
+    <div class="kpi-grid kpi-grid-fin">
+      <div class="kpi-card kpi-emerald" onclick="showSection('honorarios')">
+        <div class="kpi-icon">💼</div>
+        <div class="kpi-val" id="kpi-hon">$42,500</div>
+        <div class="kpi-label">Honorarios Cobrados</div>
+        <div class="kpi-trend">Este mes</div>
+      </div>
+      <div class="kpi-card kpi-teal" onclick="showSection('honorarios')">
+        <div class="kpi-icon">⏳</div>
+        <div class="kpi-val" id="kpi-pend">$18,000</div>
+        <div class="kpi-label">Por Cobrar</div>
+        <div class="kpi-trend">3 facturas pendientes</div>
+      </div>
+      <div class="kpi-card kpi-orange" onclick="showSection('gastos')">
+        <div class="kpi-icon">💸</div>
+        <div class="kpi-val" id="kpi-gas">$8,350</div>
+        <div class="kpi-label">Gastos del Mes</div>
+        <div class="kpi-trend">Aranceles + otros</div>
+      </div>
+      <div class="kpi-card kpi-indigo" onclick="showSection('rpp')">
+        <div class="kpi-icon">🏠</div>
+        <div class="kpi-val" id="kpi-tram">9</div>
+        <div class="kpi-label">Trámites Gov. Activos</div>
+        <div class="kpi-trend">RPP · Catastro · SAT</div>
+      </div>
+    </div>
+
+    <!-- AUDIENCIAS HOY + MINI CALENDARIO -->
+    <div class="duo-grid">
+      <div class="glass-card">
+        <div class="card-header">
+          <h3>Audiencias de Hoy</h3>
+          <span class="badge-today" id="fechaHoy"></span>
+        </div>
+        <div class="audit-list" id="audiencias-hoy">
+          <div class="audit-item urgente">
+            <div class="audit-time">10:00</div>
+            <div class="audit-body">
+              <div class="audit-title">Torres vs. Constructora del Caribe</div>
+              <div class="audit-meta">Exp. 1042/2024 · Juzgado 3° Civil · Cancún</div>
+              <span class="audit-tipo tipo-civil">Civil</span>
+            </div>
+          </div>
+          <div class="audit-item">
+            <div class="audit-time">12:30</div>
+            <div class="audit-body">
+              <div class="audit-title">Rodríguez — Divorcio Incausado</div>
+              <div class="audit-meta">Exp. 0956/2024 · Juzgado 1° Familiar · Playa del Carmen</div>
+              <span class="audit-tipo tipo-familiar">Familiar</span>
+            </div>
+          </div>
+          <div class="audit-item">
+            <div class="audit-time">16:00</div>
+            <div class="audit-body">
+              <div class="audit-title">Pérez — Amparo Directo</div>
+              <div class="audit-meta">Exp. A-234/2024 · Tribunal Colegiado · Cancún</div>
+              <span class="audit-tipo tipo-amparo">Amparo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-header"><h3>Calendario</h3></div>
+        <div class="mini-cal" id="miniCal"></div>
+      </div>
+    </div>
+
+    <!-- TRÁMITES URGENTES -->
+    <div class="glass-card" style="margin-bottom:16px">
+      <div class="card-header">
+        <h3>⚡ Trámites Gubernamentales Urgentes</h3>
+        <button class="link-btn" onclick="showSection('rpp')">Ver todos →</button>
+      </div>
+      <div id="tramitesUrgentes"></div>
+    </div>
+
+    <!-- EXPEDIENTES RECIENTES -->
+    <div class="glass-card">
+      <div class="card-header">
+        <h3>Expedientes Recientes</h3>
+        <button class="link-btn" onclick="showSection('expedientes')">Ver todos →</button>
+      </div>
+      <div class="exp-table-wrap">
+        <table class="exp-table">
+          <thead>
+            <tr>
+              <th>Expediente</th><th>Cliente</th><th>Materia</th>
+              <th>Juzgado</th><th>Estatus</th><th>Próx. Acto</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-dashboard"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: EXPEDIENTES ══ -->
+  <section class="section" id="sec-expedientes">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar expediente, cliente..." oninput="filtrarExpedientes(this.value)" />
+      <div class="filter-pills">
+        <button class="pill active" onclick="filtrarMateria('todos',this)">Todos</button>
+        <button class="pill" onclick="filtrarMateria('civil',this)">Civil</button>
+        <button class="pill" onclick="filtrarMateria('familiar',this)">Familiar</button>
+        <button class="pill" onclick="filtrarMateria('penal',this)">Penal</button>
+        <button class="pill" onclick="filtrarMateria('amparo',this)">Amparo</button>
+        <button class="pill" onclick="filtrarMateria('mercantil',this)">Mercantil</button>
+      </div>
+      <button class="btn-new" onclick="openModal('expediente')">+ Nuevo Expediente</button>
+    </div>
+    <div class="exp-cards-grid" id="expCardsGrid"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: AGENDA ════════ -->
+  <section class="section" id="sec-agenda">
+    <div class="section-toolbar">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="cambiarMes(-1)">‹</button>
+        <span id="calTitle" class="cal-title"></span>
+        <button class="cal-nav-btn" onclick="cambiarMes(1)">›</button>
+      </div>
+      <button class="btn-new" onclick="openModal('audiencia')">+ Nueva Audiencia</button>
+    </div>
+    <div class="full-cal-wrap">
+      <div class="full-cal" id="fullCal"></div>
+    </div>
+    <div class="glass-card" style="margin-top:1.5rem">
+      <div class="card-header"><h3>Próximas Audiencias</h3></div>
+      <div class="prox-list" id="proxList"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: CLIENTES ═════ -->
+  <section class="section" id="sec-clientes">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar cliente..." oninput="filtrarClientes(this.value)" />
+      <button class="btn-new" onclick="openModal('cliente')">+ Nuevo Cliente</button>
+    </div>
+    <div class="clients-grid" id="clientsGrid"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: DOCUMENTOS ═══ -->
+  <section class="section" id="sec-documentos">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar documento..." />
+      <button class="btn-new" onclick="openModal('documento')">+ Nuevo Documento</button>
+    </div>
+    <div class="docs-list" id="docsList"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: RPP ══════════ -->
+  <section class="section" id="sec-rpp">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar trámite RPP..." oninput="filtrarTramites('rpp', this.value)" />
+      <div class="filter-pills">
+        <button class="pill active" onclick="filtrarEstTramite('rpp','todos',this)">Todos</button>
+        <button class="pill" onclick="filtrarEstTramite('rpp','en_tramite',this)">En Trámite</button>
+        <button class="pill" onclick="filtrarEstTramite('rpp','urgente',this)">Urgente</button>
+        <button class="pill" onclick="filtrarEstTramite('rpp','concluido',this)">Concluido</button>
+      </div>
+      <button class="btn-new" onclick="openModal('rpp')">+ Nuevo Trámite</button>
+    </div>
+    <div class="tramite-info-banner">
+      <span class="ti-icon">🏠</span>
+      <div>
+        <div class="ti-title">Registro Público de la Propiedad</div>
+        <div class="ti-sub">Inscripciones, cancelaciones, búsquedas de antecedentes registrales y folio real.</div>
+      </div>
+    </div>
+    <div class="tramites-grid" id="grid-rpp"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: CATASTRO ═════ -->
+  <section class="section" id="sec-catastro">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar trámite Catastro..." oninput="filtrarTramites('catastro', this.value)" />
+      <button class="btn-new" onclick="openModal('catastro')">+ Nuevo Trámite</button>
+    </div>
+    <div class="tramite-info-banner" style="--ti-color:#fbbf24">
+      <span class="ti-icon">🗺</span>
+      <div>
+        <div class="ti-title">Catastro Municipal</div>
+        <div class="ti-sub">Avalúos, cédulas catastrales, actualización de valores, traslados de dominio.</div>
+      </div>
+    </div>
+    <div class="tramites-grid" id="grid-catastro"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: REG CIVIL ════ -->
+  <section class="section" id="sec-regcivil">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar trámite Reg. Civil..." oninput="filtrarTramites('regcivil', this.value)" />
+      <button class="btn-new" onclick="openModal('regcivil')">+ Nuevo Trámite</button>
+    </div>
+    <div class="tramite-info-banner" style="--ti-color:#a78bfa">
+      <span class="ti-icon">📜</span>
+      <div>
+        <div class="ti-title">Registro Civil</div>
+        <div class="ti-sub">Actas de nacimiento, matrimonio, defunción, divorcios y reconocimientos.</div>
+      </div>
+    </div>
+    <div class="tramites-grid" id="grid-regcivil"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: SAT ══════════ -->
+  <section class="section" id="sec-sat">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar trámite SAT..." oninput="filtrarTramites('sat', this.value)" />
+      <button class="btn-new" onclick="openModal('sat')">+ Nuevo Trámite SAT</button>
+    </div>
+    <div class="tramite-info-banner" style="--ti-color:#34d399">
+      <span class="ti-icon">🧾</span>
+      <div>
+        <div class="ti-title">SAT / Trámites Fiscales</div>
+        <div class="ti-sub">RFC, e.firma, aclaraciones, declaraciones, devoluciones, buzón tributario.</div>
+      </div>
+    </div>
+    <div class="tramites-grid" id="grid-sat"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: NOTARÍA ══════ -->
+  <section class="section" id="sec-notaria">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar trámite Notaría..." oninput="filtrarTramites('notaria', this.value)" />
+      <button class="btn-new" onclick="openModal('notaria')">+ Nuevo Trámite Notarial</button>
+    </div>
+    <div class="tramite-info-banner" style="--ti-color:#f472b6">
+      <span class="ti-icon">🖋</span>
+      <div>
+        <div class="ti-title">Notaría Pública</div>
+        <div class="ti-sub">Escrituras, poderes notariales, testamentos, protocolizaciones y fe de hechos.</div>
+      </div>
+    </div>
+    <div class="tramites-grid" id="grid-notaria"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: HONORARIOS ═══ -->
+  <section class="section" id="sec-honorarios">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar honorario..." />
+      <div class="filter-pills">
+        <button class="pill active" onclick="filtrarHonorarios('todos',this)">Todos</button>
+        <button class="pill" onclick="filtrarHonorarios('cobrado',this)">Cobrados</button>
+        <button class="pill" onclick="filtrarHonorarios('pendiente',this)">Pendientes</button>
+        <button class="pill" onclick="filtrarHonorarios('vencido',this)">Vencidos</button>
+      </div>
+      <button class="btn-new" onclick="openModal('honorario')">+ Registrar Cobro</button>
+    </div>
+
+    <!-- Resumen financiero -->
+    <div class="fin-summary-grid">
+      <div class="fin-box fin-box-green">
+        <div class="fin-label">Total Cobrado (mes)</div>
+        <div class="fin-amount" id="fin-cobrado">$42,500</div>
+      </div>
+      <div class="fin-box fin-box-amber">
+        <div class="fin-label">Por Cobrar</div>
+        <div class="fin-amount" id="fin-por-cobrar">$18,000</div>
+      </div>
+      <div class="fin-box fin-box-rose">
+        <div class="fin-label">Vencido</div>
+        <div class="fin-amount" id="fin-vencido">$5,000</div>
+      </div>
+      <div class="fin-box fin-box-cyan">
+        <div class="fin-label">Anual Acumulado</div>
+        <div class="fin-amount" id="fin-anual">$210,000</div>
+      </div>
+    </div>
+
+    <div class="hon-list" id="honList"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: GASTOS ═══════ -->
+  <section class="section" id="sec-gastos">
+    <div class="section-toolbar">
+      <input class="search-input" type="search" placeholder="🔍 Buscar gasto..." />
+      <div class="filter-pills">
+        <button class="pill active" onclick="filtrarGastos('todos',this)">Todos</button>
+        <button class="pill" onclick="filtrarGastos('arancel',this)">Aranceles</button>
+        <button class="pill" onclick="filtrarGastos('operativo',this)">Operativos</button>
+        <button class="pill" onclick="filtrarGastos('tramite',this)">Trámites</button>
+      </div>
+      <button class="btn-new" onclick="openModal('gasto')">+ Registrar Gasto</button>
+    </div>
+
+    <div class="fin-summary-grid">
+      <div class="fin-box fin-box-rose">
+        <div class="fin-label">Gastos del Mes</div>
+        <div class="fin-amount" id="gas-mes">$8,350</div>
+      </div>
+      <div class="fin-box fin-box-amber">
+        <div class="fin-label">Aranceles Pagados</div>
+        <div class="fin-amount" id="gas-arancel">$3,800</div>
+      </div>
+      <div class="fin-box fin-box-cyan">
+        <div class="fin-label">Gastos Operativos</div>
+        <div class="fin-amount" id="gas-oper">$4,550</div>
+      </div>
+      <div class="fin-box fin-box-green">
+        <div class="fin-label">Balance Neto</div>
+        <div class="fin-amount" id="gas-balance">$34,150</div>
+      </div>
+    </div>
+
+    <div class="gastos-list" id="gastosList"></div>
+  </section>
+
+  <!-- ══════════════════════ SECCIÓN: ESTADÍSTICAS ═ -->
+  <section class="section" id="sec-estadisticas">
+    <div class="stats-grid">
+      <div class="glass-card span2">
+        <div class="card-header"><h3>Expedientes por Materia</h3></div>
+        <div class="bar-chart" id="barChart"></div>
+      </div>
+      <div class="glass-card">
+        <div class="card-header"><h3>Estatus General</h3></div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 200 200">
+            <circle class="donut-bg" cx="100" cy="100" r="70"/>
+            <circle class="donut-seg seg1" cx="100" cy="100" r="70" stroke-dasharray="176 263" stroke-dashoffset="0"/>
+            <circle class="donut-seg seg2" cx="100" cy="100" r="70" stroke-dasharray="88 351" stroke-dashoffset="-176"/>
+            <circle class="donut-seg seg3" cx="100" cy="100" r="70" stroke-dasharray="44 395" stroke-dashoffset="-264"/>
+            <circle class="donut-seg seg4" cx="100" cy="100" r="70" stroke-dasharray="22 417" stroke-dashoffset="-308"/>
+            <text x="100" y="95" class="donut-num">24</text>
+            <text x="100" y="115" class="donut-label-c">Total</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="legend-item"><span class="legend-dot" style="background:#22d3ee"></span>En trámite (9)</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#a78bfa"></span>Sentencia (4)</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#f472b6"></span>Ejecución (2)</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#fbbf24"></span>Suspendido (1)</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="card-header"><h3>Audiencias — 6 Meses</h3></div>
+        <div class="line-chart" id="lineChart"></div>
+      </div>
+      <!-- Gráfica de ingresos -->
+      <div class="glass-card span2">
+        <div class="card-header"><h3>Honorarios vs Gastos — 6 Meses</h3></div>
+        <div class="bar-chart" id="barChartFin"></div>
+      </div>
+      <!-- Trámites gov -->
+      <div class="glass-card">
+        <div class="card-header"><h3>Trámites por Institución</h3></div>
+        <div class="bar-chart" id="barChartTram"></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main-wrap -->
+
+<!-- ══════════════════════════════════════════ MODALS ═══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ TOAST ════ -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
